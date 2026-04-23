@@ -207,6 +207,32 @@
     margin-bottom: 18px;
     line-height: 1.6;
   }
+  .instr-toggle {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.82em;
+    color: var(--primary);
+    cursor: pointer;
+    font-weight: 600;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .instr-toggle:hover { opacity: 0.75; }
+  .instr-es {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #eff6ff;
+    border-left: 3px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.88em;
+    color: #1e40af;
+    line-height: 1.6;
+  }
 
   /* AUDIO */
   .audio-container {
@@ -233,7 +259,24 @@
     border-radius: 20px;
     border: 1px solid var(--border);
   }
-  .play-counter.warning { color: var(--danger); border-color: var(--danger); }
+  .play-counter.warning { color: var(--warning); border-color: var(--warning); }
+  .play-counter.limit   { color: var(--danger);  border-color: var(--danger); }
+
+  /* SAVE TOAST */
+  #saveToast {
+    display: none;
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    background: var(--success);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 600;
+    z-index: 999;
+    box-shadow: 0 4px 14px rgba(16,185,129,0.3);
+  }
 
   /* READING TEXT */
   .reading-text-box {
@@ -468,45 +511,47 @@
   .calculate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,185,129,0.35); }
 
   /* RESULTS */
-  #results { display: none; margin-top: 30px; }
-  .results-card {
-    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-    border: 1px solid #6ee7b7;
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 24px;
-  }
-  .results-card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5em;
-    color: #065f46;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  .score-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #a7f3d0;
-    font-size: 0.95em;
-  }
-  .score-row:last-child { border-bottom: none; font-weight: 700; font-size: 1.05em; }
-  .grade-display {
-    text-align: center;
-    margin-top: 20px;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    border: 2px solid #10b981;
-  }
-  .grade-display .grade-number {
-    font-family: 'DM Serif Display', serif;
-    font-size: 3.5em;
-    color: var(--primary);
-    line-height: 1;
-  }
-  .grade-display .grade-label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
+  #results{display:none;margin-top:30px;}
+  .results-card{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #6ee7b7;border-radius:16px;padding:30px;margin-bottom:24px;}
+  .results-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+  .results-card h3{font-family:'DM Serif Display',serif;font-size:1.5em;color:#065f46;}
+  .score-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #a7f3d0;font-size:.95em;}
+  .score-row:last-child{border-bottom:none;font-weight:700;font-size:1.05em;}
+  .grade-display{text-align:center;margin-top:20px;padding:20px;background:#fff;border-radius:12px;border:2px solid #10b981;}
+  .grade-number{font-family:'DM Serif Display',serif;font-size:3.5em;color:var(--primary);line-height:1;}
+  .grade-label{color:var(--muted);font-size:.85em;margin-top:4px;}
+  .grade-msg{font-size:.9em;margin-top:8px;font-weight:600;color:var(--text);}
+  /* SUMMARY DOTS */
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+  .summary-card{border:1px solid var(--border);border-radius:12px;padding:16px 20px;background:#fff;}
+  .summary-card-title{font-weight:700;font-size:.88em;color:var(--muted);margin-bottom:4px;}
+  .summary-score{font-family:'DM Serif Display',serif;font-size:1.4em;margin-bottom:8px;}
+  .summary-score.green{color:#10b981;}.summary-score.yellow{color:#f59e0b;}.summary-score.red{color:#ef4444;}
+  .summary-dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+  .dot{width:14px;height:14px;border-radius:50%;}
+  .dot.correct{background:var(--success);}.dot.incorrect{background:var(--danger);}
+  /* SECTION MESSAGES */
+  .section-feedback-msg{border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.88em;line-height:1.6;}
+  .section-feedback-msg.great{background:#f0fdf4;border:1px solid #86efac;color:#14532d;}
+  .section-feedback-msg.good{background:#fffbeb;border:1px solid #fde68a;color:#78350f;}
+  .section-feedback-msg.needswork{background:#fff1f2;border:1px solid #fca5a5;color:#7f1d1d;}
+  .section-feedback-msg strong{display:block;margin-bottom:6px;}
+  .msg-tips{padding-left:16px;margin-top:6px;}.msg-tips li{margin-bottom:4px;}
+  /* FEEDBACK ITEMS */
+  .feedback-part{margin-bottom:20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .feedback-part-header{padding:12px 18px;font-weight:700;font-size:.9em;display:flex;align-items:center;gap:8px;}
+  .feedback-part-header.listening{background:#ede9fe;color:var(--secondary);}
+  .feedback-part-header.reading{background:#dbeafe;color:#1d4ed8;}
+  .feedback-item{padding:14px 18px;border-bottom:1px solid var(--border);font-size:.88em;line-height:1.5;}
+  .feedback-item:last-child{border-bottom:none;}
+  .feedback-item.hidden{display:none;}
+  .fi-label{font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .student-ans{color:var(--muted);}
+  .correct-ans{color:var(--success);font-weight:600;}
+  .explanation{margin-top:5px;color:#64748b;font-style:italic;font-size:.9em;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.8em;font-weight:700;}
+  .tag.correct-tag{background:#dcfce7;color:#15803d;}
+  .tag.incorrect-tag{background:#fee2e2;color:#b91c1c;}
 
   /* FEEDBACK */
   .feedback-section {
@@ -551,27 +596,7 @@
   .tag.correct-tag  { background: #dcfce7; color: #15803d; }
   .tag.incorrect-tag { background: #fee2e2; color: #b91c1c; }
 
-  /* MANUAL OVERRIDE */
-  .manual-override {
-    background: #fefce8;
-    border: 1px solid #fde047;
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-top: 20px;
-    font-size: 0.88em;
-  }
-  .manual-override h4 { font-size: 0.92em; margin-bottom: 12px; color: #854d0e; }
-  .manual-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
-  .manual-row label { color: var(--muted); min-width: 120px; }
-  .manual-row input {
-    width: 80px;
-    border: 1px solid #fde047;
-    border-radius: 6px;
-    padding: 5px 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.92em;
-    background: white;
-  }
+
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
@@ -583,6 +608,38 @@
     .score-pills { gap: 8px; }
     .score-pill { font-size: 0.78em; padding: 5px 12px; }
   }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap { background:#e0e7ff; height:8px; position:relative; }
+  .progress-fill { height:8px; background:linear-gradient(90deg,var(--primary),var(--secondary)); transition:width .4s ease; width:0%; }
+  .progress-fill.complete { background:linear-gradient(90deg,#10b981,#059669); }
+  .progress-label { text-align:center; font-size:.8em; color:var(--muted); padding:6px 0 4px; font-weight:600; }
+
+  /* FLASH TOAST */
+  #saveToast { display:none; position:fixed; bottom:22px; right:22px; background:var(--success); color:#fff; padding:10px 18px; border-radius:8px; font-size:.85em; font-weight:600; z-index:999; box-shadow:0 4px 14px rgba(16,185,129,.3); }
+
+  /* WARNING MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9998; align-items:center; justify-content:center; }
+  .modal-overlay.active { display:flex; }
+  .modal-box { background:white; border-radius:16px; padding:30px; max-width:400px; width:90%; box-shadow:0 20px 50px rgba(0,0,0,0.25); font-family:'DM Sans',sans-serif; }
+  .modal-box h3 { font-family:'DM Serif Display',serif; font-size:1.2em; color:var(--text); margin-bottom:10px; }
+  .modal-box p { font-size:0.88em; color:var(--muted); margin-bottom:14px; line-height:1.5; }
+  .warn-list { list-style:none; margin-bottom:18px; }
+  .warn-item { font-size:0.88em; padding:6px 0; border-bottom:1px solid var(--border); color:var(--text); }
+  .modal-actions { display:flex; gap:10px; flex-wrap:wrap; }
+  .modal-actions button { flex:1; padding:10px; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.88em; font-weight:600; cursor:pointer; border:none; }
+  .btn-goto { background:#eff6ff; color:var(--primary); border:1px solid #bfdbfe !important; }
+  .btn-force { background:var(--primary); color:white; }
+
+  /* FILTER TABS */
+  .filter-tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .filter-tab { padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:#f8fafc; font-family:'DM Sans',sans-serif; font-size:0.82em; font-weight:600; cursor:pointer; color:var(--muted); transition:all .15s; }
+  .filter-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
+
+  /* PRINT BUTTON */
+  .print-btn { display:inline-flex; align-items:center; gap:6px; margin-top:14px; padding:9px 18px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.85em; font-weight:600; color:var(--muted); cursor:pointer; transition:all .15s; }
+  .print-btn:hover { background:#e0e7ff; color:var(--primary); border-color:var(--primary); }
+  @media print { body { background:white; padding:0; } .container { box-shadow:none; } .calculate-btn,.print-btn,.email-btn,.geminiBtn,#savedBanner,#saveToast,.modal-overlay,.instr-toggle,.instr-es { display:none !important; } }
 </style>
 </head>
 <body>
@@ -602,17 +659,45 @@
     </div>
   </div>
 
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrap">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">0 de 24 preguntas respondidas</div>
+
+  <!-- FLASH TOAST -->
+  <div id="saveToast">✓ Guardado automáticamente</div>
+
+  <!-- WARNING MODAL -->
+  <div class="modal-overlay" id="warningModal">
+    <div class="modal-box">
+      <h3>⚠️ Preguntas sin responder</h3>
+      <p>Tienes las siguientes preguntas sin responder. Te recomendamos completarlas antes de calcular tu nota.</p>
+      <ul class="warn-list" id="warningList"></ul>
+      <div class="modal-actions">
+        <button class="btn-goto" onclick="goToUnanswered()">🔍 Ir a la primera sin responder</button>
+        <button class="btn-force" onclick="forceCalculate()">Calcular igual →</button>
+      </div>
+    </div>
+  </div>
+
   <div class="content">
 
-    <!-- AUTOSAVE BANNER -->
-    <div id="savedBanner">
-      💾 Se encontraron respuestas guardadas. ¡Tus respuestas han sido recuperadas!
-      <button onclick="clearSaved()">Borrar y empezar de nuevo</button>
+    <!-- CLEAR / AUTOSAVE BANNER -->
+    <div id="savedBanner" style="display:none;">
+      🗑️ Tienes respuestas guardadas.
+      <button onclick="clearAllAnswers()">Borrar y empezar de nuevo</button>
     </div>
+
+    <!-- SAVE TOAST -->
+    <div id="saveToast">💾 Guardado</div>
 
     <!-- INFO BOX -->
     <div class="info-box">
-      <strong>📋 Directions:</strong>
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+        <strong>📋 Directions:</strong>
+        <button class="instr-toggle" onclick="toggleInstr('es-directions')" style="margin-top:0;">🌐 Ver en español</button>
+      </div>
       <ul>
         <li>You have <strong>60 minutes</strong> to complete this mock test.</li>
         <li>Audio files will be played a <strong>maximum of 2 times</strong>.</li>
@@ -621,12 +706,23 @@
         <li>Your answers are <strong>saved automatically</strong> as you type.</li>
         <li>Use the <strong>Writing rubric</strong> to self-evaluate your own text.</li>
       </ul>
+      <div class="instr-es" id="es-directions" style="margin-top:10px;">
+        <strong>📋 Instrucciones:</strong>
+        <ul style="padding-left:18px; margin-top:6px;">
+          <li>Tienes <strong>60 minutos</strong> para completar este mock test.</li>
+          <li>Los audios se reproducirán un <strong>máximo de 2 veces</strong>.</li>
+          <li>Lee todas las preguntas con cuidado antes de responder.</li>
+          <li>Completa la prueba individualmente. No se permiten dispositivos electrónicos.</li>
+          <li>Tus respuestas se <strong>guardan automáticamente</strong> mientras escribes.</li>
+          <li>Usa la <strong>rúbrica de Writing</strong> para autoevaluar tu texto.</li>
+        </ul>
+      </div>
     </div>
 
     <!-- STUDENT NAME -->
     <div class="name-block">
       <label for="studentName">👤 Full Name / Nombre completo</label>
-      <input type="text" id="studentName" placeholder="Write your full name here..." oninput="saveAll()">
+      <input type="text" id="studentName" placeholder="Write your full name here..." oninput="saveAll();updateProgress()">
     </div>
 
     <!-- ============================================================ -->
@@ -642,13 +738,21 @@
 
         <div class="part-instructions">
           In both tasks, <strong>before listening</strong> to the audio files, review the questions carefully. This will help you identify the key information you need.
+          <br><button class="instr-toggle" onclick="toggleInstr('es-general')">🌐 Ver en español</button>
+          <div class="instr-es" id="es-general">
+            En ambas tareas, <strong>antes de escuchar</strong> los audios, revisa las preguntas con cuidado. Esto te ayudará a identificar la información clave que necesitas.
+          </div>
         </div>
 
         <!-- LISTENING PART A -->
         <div class="part-header">Part A — Fill in the gaps &nbsp;·&nbsp; 6 points (1 each)</div>
-        <p style="font-size:0.92em; margin-bottom:16px; color:var(--muted);">
+        <div class="part-instructions">
           Listen to the description of the Frankfurt Global Business Expo and fill in the gaps with the correct information.
-        </p>
+          <br><button class="instr-toggle" onclick="toggleInstr('es-la')">🌐 Ver en español</button>
+          <div class="instr-es" id="es-la">
+            Escucha la descripción de la Feria de Negocios de Frankfurt y completa los espacios con la información correcta.
+          </div>
+        </div>
 
         <div class="audio-container">
           <div class="audio-label">🔊 Audio — Part A: The Frankfurt Global Business Expo</div>
@@ -663,16 +767,16 @@
         <div class="reading-text-box">
           <h4>The Frankfurt Global Business Expo</h4>
           <p>
-            The Frankfurt Global Business Expo is a <input class="blank-input" id="la1" placeholder="(1)" oninput="saveAll()"> and professional event that takes place every year in Germany. It is one of the most <input class="blank-input" id="la2" placeholder="(2)" oninput="saveAll()"> trade events in the world, where companies from many different countries come to present and promote their products and services.
+            The Frankfurt Global Business Expo is a <input class="blank-input" id="la1" placeholder="(1)" oninput="saveAll();updateProgress()"> and professional event that takes place every year in Germany. It is one of the most <input class="blank-input" id="la2" placeholder="(2)" oninput="saveAll();updateProgress()"> trade events in the world, where companies from many different countries come to present and promote their products and services.
           </p><br>
           <p>
-            Every year, thousands of <input class="blank-input" id="la3" placeholder="(3)" oninput="saveAll()"> come to the expo. They represent companies from industries such as technology, food, fashion, and manufacturing. During the event, businesses show their <input class="blank-input" id="la4" placeholder="(4)" oninput="saveAll()"> and discuss new trade opportunities with potential clients from around the world.
+            Every year, thousands of <input class="blank-input" id="la3" placeholder="(3)" oninput="saveAll();updateProgress()"> come to the expo. They represent companies from industries such as technology, food, fashion, and manufacturing. During the event, businesses show their <input class="blank-input" id="la4" placeholder="(4)" oninput="saveAll();updateProgress()"> and discuss new trade opportunities with potential clients from around the world.
           </p><br>
           <p>
-            The expo is a great opportunity for companies to sign <input class="blank-input" id="la5" placeholder="(5)" oninput="saveAll()"> and expand their presence in international markets. Many important business agreements are made during these three days of activities.
+            The expo is a great opportunity for companies to sign <input class="blank-input" id="la5" placeholder="(5)" oninput="saveAll();updateProgress()"> and expand their presence in international markets. Many important business agreements are made during these three days of activities.
           </p><br>
           <p>
-            The event also invites industry <input class="blank-input" id="la6" placeholder="(6)" oninput="saveAll()"> who give talks about new trends in foreign trade and global business. It is an essential event for professionals working in international commerce.
+            The event also invites industry <input class="blank-input" id="la6" placeholder="(6)" oninput="saveAll();updateProgress()"> who give talks about new trends in foreign trade and global business. It is an essential event for professionals working in international commerce.
           </p>
         </div>
 
@@ -680,9 +784,13 @@
 
         <!-- LISTENING PART B -->
         <div class="part-header">Part B — Conversation &nbsp;·&nbsp; 6 points (1 each)</div>
-        <p style="font-size:0.92em; margin-bottom:16px; color:var(--muted);">
+        <div class="part-instructions">
           Listen to the job interview between Robert and Laura and answer the questions by selecting the correct alternative.
-        </p>
+          <br><button class="instr-toggle" onclick="toggleInstr('es-lb')">🌐 Ver en español</button>
+          <div class="instr-es" id="es-lb">
+            Escucha la entrevista de trabajo entre Robert y Laura y responde las preguntas seleccionando la alternativa correcta.
+          </div>
+        </div>
 
         <div class="audio-container">
           <div class="audio-label">🔊 Audio — Part B: A Job Interview</div>
@@ -699,10 +807,10 @@
           <div class="mc-cell">
             <p class="question-text">1. Where is Laura coming from?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="lb1" value="a" onchange="saveAll()"> a) She is coming from the airport.</label>
-              <label class="option-label"><input type="radio" name="lb1" value="b" onchange="saveAll()"> b) She is coming from downtown.</label>
-              <label class="option-label"><input type="radio" name="lb1" value="c" onchange="saveAll()"> c) She is coming from another city.</label>
-              <label class="option-label"><input type="radio" name="lb1" value="d" onchange="saveAll()"> d) She is coming from home.</label>
+              <label class="option-label"><input type="radio" name="lb1" value="a" onchange="saveAll();updateProgress()"> a) She is coming from the airport.</label>
+              <label class="option-label"><input type="radio" name="lb1" value="b" onchange="saveAll();updateProgress()"> b) She is coming from downtown.</label>
+              <label class="option-label"><input type="radio" name="lb1" value="c" onchange="saveAll();updateProgress()"> c) She is coming from another city.</label>
+              <label class="option-label"><input type="radio" name="lb1" value="d" onchange="saveAll();updateProgress()"> d) She is coming from home.</label>
             </div>
           </div>
 
@@ -710,10 +818,10 @@
           <div class="mc-cell">
             <p class="question-text">2. What is Laura doing at her current job?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="lb2" value="a" onchange="saveAll()"> a) She is looking for new clients.</label>
-              <label class="option-label"><input type="radio" name="lb2" value="b" onchange="saveAll()"> b) She is preparing a presentation.</label>
-              <label class="option-label"><input type="radio" name="lb2" value="c" onchange="saveAll()"> c) She is attending a trade fair.</label>
-              <label class="option-label"><input type="radio" name="lb2" value="d" onchange="saveAll()"> d) She is managing customs documentation.</label>
+              <label class="option-label"><input type="radio" name="lb2" value="a" onchange="saveAll();updateProgress()"> a) She is looking for new clients.</label>
+              <label class="option-label"><input type="radio" name="lb2" value="b" onchange="saveAll();updateProgress()"> b) She is preparing a presentation.</label>
+              <label class="option-label"><input type="radio" name="lb2" value="c" onchange="saveAll();updateProgress()"> c) She is attending a trade fair.</label>
+              <label class="option-label"><input type="radio" name="lb2" value="d" onchange="saveAll();updateProgress()"> d) She is managing customs documentation.</label>
             </div>
           </div>
 
@@ -721,10 +829,10 @@
           <div class="mc-cell">
             <p class="question-text">3. How many years of experience does Laura have?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="lb3" value="a" onchange="saveAll()"> a) Two years.</label>
-              <label class="option-label"><input type="radio" name="lb3" value="b" onchange="saveAll()"> b) Three years.</label>
-              <label class="option-label"><input type="radio" name="lb3" value="c" onchange="saveAll()"> c) Four years.</label>
-              <label class="option-label"><input type="radio" name="lb3" value="d" onchange="saveAll()"> d) Five years.</label>
+              <label class="option-label"><input type="radio" name="lb3" value="a" onchange="saveAll();updateProgress()"> a) Two years.</label>
+              <label class="option-label"><input type="radio" name="lb3" value="b" onchange="saveAll();updateProgress()"> b) Three years.</label>
+              <label class="option-label"><input type="radio" name="lb3" value="c" onchange="saveAll();updateProgress()"> c) Four years.</label>
+              <label class="option-label"><input type="radio" name="lb3" value="d" onchange="saveAll();updateProgress()"> d) Five years.</label>
             </div>
           </div>
 
@@ -732,10 +840,10 @@
           <div class="mc-cell">
             <p class="question-text">4. What does Laura usually do at her current job?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="lb4" value="a" onchange="saveAll()"> a) She usually trains new employees.</label>
-              <label class="option-label"><input type="radio" name="lb4" value="b" onchange="saveAll()"> b) She usually organizes trade fairs.</label>
-              <label class="option-label"><input type="radio" name="lb4" value="c" onchange="saveAll()"> c) She usually coordinates with suppliers.</label>
-              <label class="option-label"><input type="radio" name="lb4" value="d" onchange="saveAll()"> d) She usually travels internationally.</label>
+              <label class="option-label"><input type="radio" name="lb4" value="a" onchange="saveAll();updateProgress()"> a) She usually trains new employees.</label>
+              <label class="option-label"><input type="radio" name="lb4" value="b" onchange="saveAll();updateProgress()"> b) She usually organizes trade fairs.</label>
+              <label class="option-label"><input type="radio" name="lb4" value="c" onchange="saveAll();updateProgress()"> c) She usually coordinates with suppliers.</label>
+              <label class="option-label"><input type="radio" name="lb4" value="d" onchange="saveAll();updateProgress()"> d) She usually travels internationally.</label>
             </div>
           </div>
 
@@ -743,10 +851,10 @@
           <div class="mc-cell">
             <p class="question-text">5. When does Laura sometimes work extra hours?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="lb5" value="a" onchange="saveAll()"> a) When she has meetings with clients.</label>
-              <label class="option-label"><input type="radio" name="lb5" value="b" onchange="saveAll()"> b) When she is training new staff.</label>
-              <label class="option-label"><input type="radio" name="lb5" value="c" onchange="saveAll()"> c) When she is attending exhibitions.</label>
-              <label class="option-label"><input type="radio" name="lb5" value="d" onchange="saveAll()"> d) When they have urgent shipments.</label>
+              <label class="option-label"><input type="radio" name="lb5" value="a" onchange="saveAll();updateProgress()"> a) When she has meetings with clients.</label>
+              <label class="option-label"><input type="radio" name="lb5" value="b" onchange="saveAll();updateProgress()"> b) When she is training new staff.</label>
+              <label class="option-label"><input type="radio" name="lb5" value="c" onchange="saveAll();updateProgress()"> c) When she is attending exhibitions.</label>
+              <label class="option-label"><input type="radio" name="lb5" value="d" onchange="saveAll();updateProgress()"> d) When they have urgent shipments.</label>
             </div>
           </div>
 
@@ -754,10 +862,10 @@
           <div class="mc-cell">
             <p class="question-text">6. What is Laura's strongest professional skill?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="lb6" value="a" onchange="saveAll()"> a) Communication.</label>
-              <label class="option-label"><input type="radio" name="lb6" value="b" onchange="saveAll()"> b) Teamwork.</label>
-              <label class="option-label"><input type="radio" name="lb6" value="c" onchange="saveAll()"> c) Organization.</label>
-              <label class="option-label"><input type="radio" name="lb6" value="d" onchange="saveAll()"> d) Negotiation.</label>
+              <label class="option-label"><input type="radio" name="lb6" value="a" onchange="saveAll();updateProgress()"> a) Communication.</label>
+              <label class="option-label"><input type="radio" name="lb6" value="b" onchange="saveAll();updateProgress()"> b) Teamwork.</label>
+              <label class="option-label"><input type="radio" name="lb6" value="c" onchange="saveAll();updateProgress()"> c) Organization.</label>
+              <label class="option-label"><input type="radio" name="lb6" value="d" onchange="saveAll();updateProgress()"> d) Negotiation.</label>
             </div>
           </div>
 
@@ -780,9 +888,13 @@
 
         <!-- READING PART A -->
         <div class="part-header">Part A — Vocabulary in context &nbsp;·&nbsp; 6 points (1 each)</div>
-        <p style="font-size:0.92em; margin-bottom:16px; color:var(--muted);">
+        <div class="part-instructions">
           Read the company profile and circle the correct alternative to complete the text.
-        </p>
+          <br><button class="instr-toggle" onclick="toggleInstr('es-ra')">🌐 Ver en español</button>
+          <div class="instr-es" id="es-ra">
+            Lee el perfil de la empresa y encierra en un círculo la alternativa correcta para completar el texto.
+          </div>
+        </div>
 
         <div class="reading-text-box">
           <h4>Pacific Trade Solutions: Your Global Logistics Partner</h4>
@@ -794,39 +906,39 @@
         <div class="cloze-options">
           <div class="cloze-row">
             <span class="cloze-num">1)</span>
-            <label><input type="radio" name="ra1" value="a" onchange="saveAll()"> a. international</label>
-            <label><input type="radio" name="ra1" value="b" onchange="saveAll()"> b. reliable</label>
-            <label><input type="radio" name="ra1" value="c" onchange="saveAll()"> c. new</label>
+            <label><input type="radio" name="ra1" value="a" onchange="saveAll();updateProgress()"> a. international</label>
+            <label><input type="radio" name="ra1" value="b" onchange="saveAll();updateProgress()"> b. reliable</label>
+            <label><input type="radio" name="ra1" value="c" onchange="saveAll();updateProgress()"> c. new</label>
           </div>
           <div class="cloze-row">
             <span class="cloze-num">2)</span>
-            <label><input type="radio" name="ra2" value="a" onchange="saveAll()"> a. local</label>
-            <label><input type="radio" name="ra2" value="b" onchange="saveAll()"> b. national</label>
-            <label><input type="radio" name="ra2" value="c" onchange="saveAll()"> c. foreign</label>
+            <label><input type="radio" name="ra2" value="a" onchange="saveAll();updateProgress()"> a. local</label>
+            <label><input type="radio" name="ra2" value="b" onchange="saveAll();updateProgress()"> b. national</label>
+            <label><input type="radio" name="ra2" value="c" onchange="saveAll();updateProgress()"> c. foreign</label>
           </div>
           <div class="cloze-row">
             <span class="cloze-num">3)</span>
-            <label><input type="radio" name="ra3" value="a" onchange="saveAll()"> a. deliveries</label>
-            <label><input type="radio" name="ra3" value="b" onchange="saveAll()"> b. contracts</label>
-            <label><input type="radio" name="ra3" value="c" onchange="saveAll()"> c. shipments</label>
+            <label><input type="radio" name="ra3" value="a" onchange="saveAll();updateProgress()"> a. deliveries</label>
+            <label><input type="radio" name="ra3" value="b" onchange="saveAll();updateProgress()"> b. contracts</label>
+            <label><input type="radio" name="ra3" value="c" onchange="saveAll();updateProgress()"> c. shipments</label>
           </div>
           <div class="cloze-row">
             <span class="cloze-num">4)</span>
-            <label><input type="radio" name="ra4" value="a" onchange="saveAll()"> a. agreements</label>
-            <label><input type="radio" name="ra4" value="b" onchange="saveAll()"> b. reports</label>
-            <label><input type="radio" name="ra4" value="c" onchange="saveAll()"> c. schedules</label>
+            <label><input type="radio" name="ra4" value="a" onchange="saveAll();updateProgress()"> a. agreements</label>
+            <label><input type="radio" name="ra4" value="b" onchange="saveAll();updateProgress()"> b. reports</label>
+            <label><input type="radio" name="ra4" value="c" onchange="saveAll();updateProgress()"> c. schedules</label>
           </div>
           <div class="cloze-row">
             <span class="cloze-num">5)</span>
-            <label><input type="radio" name="ra5" value="a" onchange="saveAll()"> a. attend</label>
-            <label><input type="radio" name="ra5" value="b" onchange="saveAll()"> b. manage</label>
-            <label><input type="radio" name="ra5" value="c" onchange="saveAll()"> c. promote</label>
+            <label><input type="radio" name="ra5" value="a" onchange="saveAll();updateProgress()"> a. attend</label>
+            <label><input type="radio" name="ra5" value="b" onchange="saveAll();updateProgress()"> b. manage</label>
+            <label><input type="radio" name="ra5" value="c" onchange="saveAll();updateProgress()"> c. promote</label>
           </div>
           <div class="cloze-row">
             <span class="cloze-num">6)</span>
-            <label><input type="radio" name="ra6" value="a" onchange="saveAll()"> a. meetings</label>
-            <label><input type="radio" name="ra6" value="b" onchange="saveAll()"> b. workshops</label>
-            <label><input type="radio" name="ra6" value="c" onchange="saveAll()"> c. seminars</label>
+            <label><input type="radio" name="ra6" value="a" onchange="saveAll();updateProgress()"> a. meetings</label>
+            <label><input type="radio" name="ra6" value="b" onchange="saveAll();updateProgress()"> b. workshops</label>
+            <label><input type="radio" name="ra6" value="c" onchange="saveAll();updateProgress()"> c. seminars</label>
           </div>
         </div>
 
@@ -834,9 +946,13 @@
 
         <!-- READING PART B -->
         <div class="part-header">Part B — Reading comprehension &nbsp;·&nbsp; 6 points (1 each)</div>
-        <p style="font-size:0.92em; margin-bottom:16px; color:var(--muted);">
+        <div class="part-instructions">
           Read the previous text about Pacific Trade Solutions and circle the correct alternative.
-        </p>
+          <br><button class="instr-toggle" onclick="toggleInstr('es-rb')">🌐 Ver en español</button>
+          <div class="instr-es" id="es-rb">
+            Lee el texto anterior sobre Pacific Trade Solutions y encierra en un círculo la alternativa correcta.
+          </div>
+        </div>
 
         <div class="mc-grid">
 
@@ -844,10 +960,10 @@
           <div class="mc-cell">
             <p class="question-text">1. What type of relationships does the company maintain?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="rb1" value="a" onchange="saveAll()"> a) Personal relationships.</label>
-              <label class="option-label"><input type="radio" name="rb1" value="b" onchange="saveAll()"> b) Professional relationships.</label>
-              <label class="option-label"><input type="radio" name="rb1" value="c" onchange="saveAll()"> c) Social relationships.</label>
-              <label class="option-label"><input type="radio" name="rb1" value="d" onchange="saveAll()"> d) Family relationships.</label>
+              <label class="option-label"><input type="radio" name="rb1" value="a" onchange="saveAll();updateProgress()"> a) Personal relationships.</label>
+              <label class="option-label"><input type="radio" name="rb1" value="b" onchange="saveAll();updateProgress()"> b) Professional relationships.</label>
+              <label class="option-label"><input type="radio" name="rb1" value="c" onchange="saveAll();updateProgress()"> c) Social relationships.</label>
+              <label class="option-label"><input type="radio" name="rb1" value="d" onchange="saveAll();updateProgress()"> d) Family relationships.</label>
             </div>
           </div>
 
@@ -855,10 +971,10 @@
           <div class="mc-cell">
             <p class="question-text">2. What does the company handle every month?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="rb2" value="a" onchange="saveAll()"> a) Training sessions.</label>
-              <label class="option-label"><input type="radio" name="rb2" value="b" onchange="saveAll()"> b) Trade fairs.</label>
-              <label class="option-label"><input type="radio" name="rb2" value="c" onchange="saveAll()"> c) Hundreds of shipments.</label>
-              <label class="option-label"><input type="radio" name="rb2" value="d" onchange="saveAll()"> d) Product samples.</label>
+              <label class="option-label"><input type="radio" name="rb2" value="a" onchange="saveAll();updateProgress()"> a) Training sessions.</label>
+              <label class="option-label"><input type="radio" name="rb2" value="b" onchange="saveAll();updateProgress()"> b) Trade fairs.</label>
+              <label class="option-label"><input type="radio" name="rb2" value="c" onchange="saveAll();updateProgress()"> c) Hundreds of shipments.</label>
+              <label class="option-label"><input type="radio" name="rb2" value="d" onchange="saveAll();updateProgress()"> d) Product samples.</label>
             </div>
           </div>
 
@@ -866,10 +982,10 @@
           <div class="mc-cell">
             <p class="question-text">3. Who does the company coordinate with to avoid delays?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="rb3" value="a" onchange="saveAll()"> a) International buyers.</label>
-              <label class="option-label"><input type="radio" name="rb3" value="b" onchange="saveAll()"> b) Customs authorities.</label>
-              <label class="option-label"><input type="radio" name="rb3" value="c" onchange="saveAll()"> c) New employees.</label>
-              <label class="option-label"><input type="radio" name="rb3" value="d" onchange="saveAll()"> d) Coastal ports.</label>
+              <label class="option-label"><input type="radio" name="rb3" value="a" onchange="saveAll();updateProgress()"> a) International buyers.</label>
+              <label class="option-label"><input type="radio" name="rb3" value="b" onchange="saveAll();updateProgress()"> b) Customs authorities.</label>
+              <label class="option-label"><input type="radio" name="rb3" value="c" onchange="saveAll();updateProgress()"> c) New employees.</label>
+              <label class="option-label"><input type="radio" name="rb3" value="d" onchange="saveAll();updateProgress()"> d) Coastal ports.</label>
             </div>
           </div>
 
@@ -877,10 +993,10 @@
           <div class="mc-cell">
             <p class="question-text">4. What does the company promote in international markets?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="rb4" value="a" onchange="saveAll()"> a) Logistics services.</label>
-              <label class="option-label"><input type="radio" name="rb4" value="b" onchange="saveAll()"> b) Training workshops.</label>
-              <label class="option-label"><input type="radio" name="rb4" value="c" onchange="saveAll()"> c) Chilean products.</label>
-              <label class="option-label"><input type="radio" name="rb4" value="d" onchange="saveAll()"> d) Customs regulations.</label>
+              <label class="option-label"><input type="radio" name="rb4" value="a" onchange="saveAll();updateProgress()"> a) Logistics services.</label>
+              <label class="option-label"><input type="radio" name="rb4" value="b" onchange="saveAll();updateProgress()"> b) Training workshops.</label>
+              <label class="option-label"><input type="radio" name="rb4" value="c" onchange="saveAll();updateProgress()"> c) Chilean products.</label>
+              <label class="option-label"><input type="radio" name="rb4" value="d" onchange="saveAll();updateProgress()"> d) Customs regulations.</label>
             </div>
           </div>
 
@@ -888,10 +1004,10 @@
           <div class="mc-cell">
             <p class="question-text">5. What type of advice do the specialists offer?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="rb5" value="a" onchange="saveAll()"> a) Financial advice.</label>
-              <label class="option-label"><input type="radio" name="rb5" value="b" onchange="saveAll()"> b) Personal advice.</label>
-              <label class="option-label"><input type="radio" name="rb5" value="c" onchange="saveAll()"> c) Technical advice.</label>
-              <label class="option-label"><input type="radio" name="rb5" value="d" onchange="saveAll()"> d) Clear advice.</label>
+              <label class="option-label"><input type="radio" name="rb5" value="a" onchange="saveAll();updateProgress()"> a) Financial advice.</label>
+              <label class="option-label"><input type="radio" name="rb5" value="b" onchange="saveAll();updateProgress()"> b) Personal advice.</label>
+              <label class="option-label"><input type="radio" name="rb5" value="c" onchange="saveAll();updateProgress()"> c) Technical advice.</label>
+              <label class="option-label"><input type="radio" name="rb5" value="d" onchange="saveAll();updateProgress()"> d) Clear advice.</label>
             </div>
           </div>
 
@@ -899,10 +1015,10 @@
           <div class="mc-cell">
             <p class="question-text">6. How is Pacific Trade Solutions described?</p>
             <div class="options">
-              <label class="option-label"><input type="radio" name="rb6" value="a" onchange="saveAll()"> a) It is a small and local company.</label>
-              <label class="option-label"><input type="radio" name="rb6" value="b" onchange="saveAll()"> b) It is a growing and dynamic company.</label>
-              <label class="option-label"><input type="radio" name="rb6" value="c" onchange="saveAll()"> c) It is an old and traditional company.</label>
-              <label class="option-label"><input type="radio" name="rb6" value="d" onchange="saveAll()"> d) It is a distant and international company.</label>
+              <label class="option-label"><input type="radio" name="rb6" value="a" onchange="saveAll();updateProgress()"> a) It is a small and local company.</label>
+              <label class="option-label"><input type="radio" name="rb6" value="b" onchange="saveAll();updateProgress()"> b) It is a growing and dynamic company.</label>
+              <label class="option-label"><input type="radio" name="rb6" value="c" onchange="saveAll();updateProgress()"> c) It is an old and traditional company.</label>
+              <label class="option-label"><input type="radio" name="rb6" value="d" onchange="saveAll();updateProgress()"> d) It is a distant and international company.</label>
             </div>
           </div>
 
@@ -932,11 +1048,18 @@
           • Select one of these jobs: <strong>Shipping coordinator</strong> or <strong>Trade inspector</strong>.<br>
           • Describe the job mentioning its <strong>responsibilities, schedule,</strong> and what the person <strong>can or can't do</strong>.<br>
           • Use: <strong>simple present, can / can't</strong> and <strong>adverbs of frequency</strong>.
+          <br><button class="instr-toggle" onclick="toggleInstr('es-wr')">🌐 Ver en español</button>
+          <div class="instr-es" id="es-wr">
+            <strong>Instrucciones:</strong><br>
+            • Selecciona uno de estos trabajos: <strong>Shipping coordinator</strong> (Coordinador de envíos) o <strong>Trade inspector</strong> (Inspector de comercio).<br>
+            • Describe el trabajo mencionando sus <strong>responsabilidades, horario</strong> y lo que la persona <strong>puede o no puede hacer</strong>.<br>
+            • Usa: <strong>presente simple, can / can't</strong> y <strong>adverbios de frecuencia</strong> (always, usually, sometimes, never).
+          </div>
         </div>
 
         <div class="job-selector">
           <label for="jobSelect">Selected job:</label>
-          <select id="jobSelect" onchange="saveAll()">
+          <select id="jobSelect" onchange="saveAll();updateProgress()">
             <option value="">— Select a job —</option>
             <option value="Shipping Coordinator">Shipping Coordinator</option>
             <option value="Trade Inspector">Trade Inspector</option>
@@ -1077,89 +1200,86 @@
           <div class="rubric-subtotal" id="rubricSubtotal">Writing score (autoevaluación): — / 12 pts</div>
         </div><!-- /rubric-box -->
 
-        <!-- MANUAL OVERRIDE -->
-        <div class="manual-override">
-          <h4>⚙️ Ajuste manual de puntaje (para uso del profesor o revisión)</h4>
-          <div class="manual-row">
-            <label>Listening:</label>
-            <input type="number" id="manualListening" min="0" max="12" step="0.5" placeholder="auto" oninput="saveAll()">
-            <span style="font-size:0.85em; color:var(--muted);">/ 12 pts — deja vacío para usar puntaje automático</span>
-          </div>
-          <div class="manual-row">
-            <label>Reading:</label>
-            <input type="number" id="manualReading" min="0" max="12" step="0.5" placeholder="auto" oninput="saveAll()">
-            <span style="font-size:0.85em; color:var(--muted);">/ 12 pts</span>
-          </div>
-          <div class="manual-row">
-            <label>Writing:</label>
-            <input type="number" id="manualWriting" min="0" max="12" step="0.5" placeholder="auto" oninput="saveAll()">
-            <span style="font-size:0.85em; color:var(--muted);">/ 12 pts</span>
-          </div>
-        </div>
+
 
       </div><!-- /section-body writing -->
     </div><!-- /section writing -->
 
     <!-- CALCULATE BUTTON -->
-    <button class="calculate-btn" onclick="calculateGrade()">
-      🎯 Calculate My Final Grade
+    <button class="calculate-btn" onclick="checkBeforeCalculate()">
+      📊 Ver resultados y calcular nota
     </button>
 
     <!-- RESULTS -->
     <div id="results">
 
+      <!-- RESULTS CARD -->
       <div class="results-card">
-        <h3>📊 Your Mock Test Results</h3>
-        <div class="score-row"><span>🎧 Listening</span><span id="resListening">— / 12</span></div>
-        <div class="score-row"><span>📖 Reading</span><span id="resReading">— / 12</span></div>
-        <div class="score-row"><span>✍️ Writing (autoevaluación)</span><span id="resWriting">— / 12</span></div>
-        <div class="score-row"><span><strong>TOTAL</strong></span><span id="resTotal"><strong>— / 36</strong></span></div>
-        <div class="grade-display">
-          <div class="grade-number" id="gradeDisplay">—</div>
-          <div class="grade-label">Nota final (escala chilena · 60% = 4.0)</div>
-          <div id="gradeMessage" style="margin-top:8px; font-size:0.9em; color:var(--muted);"></div>
+        <div class="results-card-header">
+          <h3 id="resultsTitle">📊 Resultados del Mock Test</h3>
+          <button class="print-btn" onclick="printResults()">🖨️ Imprimir / Guardar PDF</button>
         </div>
+        <div class="score-row"><span>🎧 Listening A — Fill in the gaps</span><span id="res_la">—</span></div>
+        <div class="score-row"><span>🎧 Listening B — Opción múltiple</span><span id="res_lb">—</span></div>
+        <div class="score-row"><span><strong>🎧 Listening Total</strong></span><span id="res_listening"><strong>— / 12</strong></span></div>
+        <div style="margin:12px 0;border-top:1px solid #a7f3d0;"></div>
+        <div class="score-row"><span>📖 Reading A — Vocabulario en contexto</span><span id="res_ra">—</span></div>
+        <div class="score-row"><span>📖 Reading B — Comprensión lectora</span><span id="res_rb">—</span></div>
+        <div class="score-row"><span><strong>📖 Reading Total</strong></span><span id="res_reading"><strong>— / 12</strong></span></div>
+        <div style="margin:12px 0;border-top:1px solid #a7f3d0;"></div>
+        <div class="score-row"><span><strong>✍️ Writing Total</strong></span><span id="res_writing"><strong>— / 12</strong></span></div>
+        <div style="margin:12px 0;border-top:1px solid #a7f3d0;"></div>
+        <div class="score-row"><strong><span>🏆 TOTAL</span><span id="res_total">— / 36</span></strong></div>
+        <div id="gradeDisplay"></div>
       </div>
 
-      <!-- FEEDBACK LISTENING -->
-      <div class="feedback-section">
-        <h3 style="font-family:'DM Serif Display',serif; font-size:1.3em; margin-bottom:16px; color:var(--text);">📝 Feedback detallado</h3>
+      <!-- SUMMARY DOTS -->
+      <div class="summary-grid" id="summaryGrid" style="display:none;"></div>
 
+      <!-- FEEDBACK SECTION -->
+      <div id="feedbackSection" style="display:none;">
+        <h3 style="font-family:'DM Serif Display',serif;font-size:1.3em;color:var(--text);margin-bottom:14px;">📝 Retroalimentación detallada</h3>
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="incorrect" onclick="filterFeedback('incorrect')">✗ Solo incorrectas</button>
+          <button class="filter-tab" data-filter="all" onclick="filterFeedback('all')">Todas las preguntas</button>
+          <button class="filter-tab" data-filter="correct" onclick="filterFeedback('correct')">✓ Solo correctas</button>
+        </div>
+
+        <div id="sectionMsgListening"></div>
         <div class="feedback-part">
-          <div class="feedback-part-header listening">🎧 Listening — Part A: Fill in the gaps</div>
-          <div id="feedbackLA"></div>
+          <div class="feedback-part-header listening">🎧 Listening — Part A (Fill in the gaps)</div>
+          <div id="fb_la"></div>
+        </div>
+        <div class="feedback-part">
+          <div class="feedback-part-header listening">🎧 Listening — Part B (Opción múltiple)</div>
+          <div id="fb_lb"></div>
         </div>
 
-        <div class="feedback-part" style="margin-top:14px;">
-          <div class="feedback-part-header listening">🎧 Listening — Part B: Conversation</div>
-          <div id="feedbackLB"></div>
+        <div id="sectionMsgReading"></div>
+        <div class="feedback-part">
+          <div class="feedback-part-header reading">📖 Reading — Part A (Vocabulario en contexto)</div>
+          <div id="fb_ra"></div>
         </div>
-
-        <div class="feedback-part" style="margin-top:14px;">
-          <div class="feedback-part-header reading">📖 Reading — Part A: Vocabulary in context</div>
-          <div id="feedbackRA"></div>
-        </div>
-
-        <div class="feedback-part" style="margin-top:14px;">
-          <div class="feedback-part-header reading">📖 Reading — Part B: Comprehension</div>
-          <div id="feedbackRB"></div>
+        <div class="feedback-part">
+          <div class="feedback-part-header reading">📖 Reading — Part B (Comprensión lectora)</div>
+          <div id="fb_rb"></div>
         </div>
 
         <!-- WRITING FEEDBACK -->
-        <div class="feedback-part" style="margin-top:14px; border-left: 3px solid #ef4444;">
-          <div class="feedback-part-header" style="background:#fff1f2; color:#be123c;">✍️ Writing — Ejemplo de respuesta modelo</div>
+        <div class="feedback-part" style="border-left:3px solid #ef4444;">
+          <div class="feedback-part-header" style="background:#fff1f2;color:#be123c;">✍️ Writing — Feedback y ejemplo modelo</div>
+          <div class="feedback-item" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);">
+            <p style="font-weight:700;margin-bottom:6px;color:var(--secondary);">🤖 Obtén retroalimentación personalizada de tu texto</p>
+            <p style="font-size:.88em;color:var(--muted);margin-bottom:12px;line-height:1.5;">Haz clic para que Gemini evalúe tu texto según la rúbrica oficial y te dé sugerencias en español.</p>
+            <button class="email-btn" onclick="copyForGemini()" style="margin-top:0;">✨ Get Gemini Feedback on My Writing</button>
+          </div>
           <div class="feedback-item">
             <p style="margin-bottom:8px;"><strong>Ejemplo modelo — Shipping Coordinator (67 palabras):</strong></p>
-            <p style="background:#f8fafc; border-radius:8px; padding:14px; font-style:italic; line-height:1.7; font-size:0.9em;">
-              "A Shipping coordinator organizes the transportation of goods between countries. This professional always coordinates delivery schedules and never ignores customs requirements. A shipping coordinator can manage multiple shipments at the same time, but can't approve import documents alone. They usually work from 8:00am to 5:00pm and sometimes communicate with international suppliers. It is a busy but essential job in foreign trade."
-            </p>
-            <p style="margin-top:10px; font-size:0.88em; color:var(--muted);">
-              ✅ Este ejemplo usa: simple present, can/can't, adverbs of frequency (always, never, usually, sometimes), vocabulario COMEX relevante y supera las 60 palabras.
-            </p>
+            <p style="background:#f8fafc;border-radius:8px;padding:14px;font-style:italic;line-height:1.7;font-size:.9em;">"A Shipping coordinator organizes the transportation of goods between countries. This professional always coordinates delivery schedules and never ignores customs requirements. A shipping coordinator can manage multiple shipments at the same time, but can't approve import documents alone. They usually work from 8:00am to 5:00pm and sometimes communicate with international suppliers. It is a busy but essential job in foreign trade."</p>
+            <p style="margin-top:10px;font-size:.88em;color:var(--muted);">✅ Usa: simple present, can/can't, adverbs of frequency (always, never, usually, sometimes), vocabulario COMEX.</p>
           </div>
         </div>
-
-      </div><!-- /feedback-section -->
+      </div>
 
     </div><!-- /results -->
 
@@ -1304,9 +1424,7 @@
       studentName: document.getElementById('studentName').value,
       jobSelect: document.getElementById('jobSelect').value,
       writingText: document.getElementById('writingText').value,
-      manualListening: document.getElementById('manualListening').value,
-      manualReading: document.getElementById('manualReading').value,
-      manualWriting: document.getElementById('manualWriting').value,
+
       lastSaved: new Date().toISOString()
     };
     // Text inputs
@@ -1322,7 +1440,12 @@
       const checked = document.querySelector(`input[name="${name}"]:checked`);
       if (checked) data[name] = checked.value;
     });
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+      flashToast();
+    }, 600);
+    checkForAnswers();
   }
 
   function loadSaved() {
@@ -1330,14 +1453,12 @@
     try { data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return; }
     if (!data.lastSaved) return;
 
-    document.getElementById('savedBanner').style.display = 'flex';
+    checkForAnswers();
 
     if (data.studentName) document.getElementById('studentName').value = data.studentName;
     if (data.jobSelect) document.getElementById('jobSelect').value = data.jobSelect;
     if (data.writingText) { document.getElementById('writingText').value = data.writingText; countWords(); }
-    if (data.manualListening) document.getElementById('manualListening').value = data.manualListening;
-    if (data.manualReading) document.getElementById('manualReading').value = data.manualReading;
-    if (data.manualWriting) document.getElementById('manualWriting').value = data.manualWriting;
+
 
     ['la1','la2','la3','la4','la5','la6'].forEach(id => {
       if (data[id]) document.getElementById(id).value = data[id];
@@ -1354,13 +1475,6 @@
       }
     });
     updateRubric();
-  }
-
-  function clearSaved() {
-    if (confirm('¿Seguro que quieres borrar todas tus respuestas y empezar de nuevo?')) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
   }
 
   // ============================================================
@@ -1484,141 +1598,436 @@ Analiza si el texto presenta señales de no haber sido escrito por un estudiante
   // ============================================================
   // GRADING
   // ============================================================
+  // ============================================================
+  // GRADE CALCULATOR
+  // ============================================================
+  function calcGrade(score, max) {
+    const pct = score / max * 100;
+    if (pct < 60) return (1.0 + (pct / 60) * 3.0).toFixed(1);
+    return (4.0 + ((pct - 60) / 40) * 3.0).toFixed(1);
+  }
+  function gradeMsg(g) {
+    g = parseFloat(g);
+    if (g >= 6.0) return { text:'🌟 ¡Excelente trabajo! Estás muy bien preparado/a.', cls:'great' };
+    if (g >= 5.0) return { text:'✅ Muy buen desempeño. Repasa los puntos con errores.', cls:'good' };
+    if (g >= 4.0) return { text:'📘 Aprobado/a. Practica más antes del examen real.', cls:'good' };
+    return { text:'⚠️ Necesitas más práctica. Revisa la retroalimentación.', cls:'needswork' };
+  }
+  function scoreColor(score, total, greenThr, yellowThr) {
+    if (score >= greenThr) return 'green';
+    if (score >= yellowThr) return 'yellow';
+    return 'red';
+  }
+
   function calculateGrade() {
-
-    // --- LISTENING A ---
-    let autoListeningScore = 0;
-    const laFeedback = [];
-
+    // AUTO-GRADE LISTENING A
+    let laScore = 0;
     LA_DATA.forEach(item => {
-      const userRaw = document.getElementById(item.id).value;
-      const user = normalizeText(userRaw);
-      const correct = item.correct.toLowerCase();
-      const isCorrect = user === correct;
-      if (isCorrect) autoListeningScore += 1;
-      laFeedback.push({
-        num: item.num,
-        user: userRaw || '(sin respuesta)',
-        correct: item.correct,
-        ok: isCorrect,
-        es: item.es
-      });
+      const user = normalizeText(document.getElementById(item.id).value);
+      if (user === item.correct.toLowerCase()) laScore++;
     });
 
-    // --- LISTENING B ---
-    const lbFeedback = [];
+    // AUTO-GRADE LISTENING B
+    let lbScore = 0;
     LB_DATA.forEach(item => {
       const checked = document.querySelector(`input[name="${item.id}"]:checked`);
-      const user = checked ? checked.value : null;
-      const isCorrect = user === item.correct;
-      if (isCorrect) autoListeningScore += 1;
-      lbFeedback.push({
-        num: item.num,
-        user: user ? user + ') ' + checked.parentElement.textContent.trim().replace(/^[a-d]\)\s*/,'') : '(sin respuesta)',
-        correct: item.correctText,
-        ok: isCorrect,
-        es: item.explanation
-      });
+      if (checked && checked.value === item.correct) lbScore++;
     });
 
-    // --- READING A ---
-    let autoReadingScore = 0;
-    const raFeedback = [];
+    // AUTO-GRADE READING A
+    let raScore = 0;
     RA_DATA.forEach(item => {
       const checked = document.querySelector(`input[name="${item.id}"]:checked`);
-      const user = checked ? checked.value : null;
-      const isCorrect = user === item.correct;
-      if (isCorrect) autoReadingScore += 1;
-      raFeedback.push({
-        num: item.num,
-        user: user ? user + '. ' + checked.parentElement.textContent.trim().replace(/^[a-c]\.\s*/,'') : '(sin respuesta)',
-        correct: item.correctText,
-        ok: isCorrect,
-        es: item.explanation
-      });
+      if (checked && checked.value === item.correct) raScore++;
     });
 
-    // --- READING B ---
-    const rbFeedback = [];
+    // AUTO-GRADE READING B
+    let rbScore = 0;
     RB_DATA.forEach(item => {
       const checked = document.querySelector(`input[name="${item.id}"]:checked`);
-      const user = checked ? checked.value : null;
-      const isCorrect = user === item.correct;
-      if (isCorrect) autoReadingScore += 1;
-      rbFeedback.push({
-        num: item.num,
-        user: user ? user + ') ' + checked.parentElement.textContent.trim().replace(/^[a-d]\)\s*/,'') : '(sin respuesta)',
-        correct: item.correctText,
-        ok: isCorrect,
-        es: item.explanation
-      });
+      if (checked && checked.value === item.correct) rbScore++;
     });
 
-    // --- WRITING ---
+    const listeningScore = laScore + lbScore;
+    const readingScore   = raScore + rbScore;
+
+    // WRITING — manual override or rubric
     const r1 = parseFloat(document.querySelector('input[name="rub1"]:checked')?.value || 0);
     const r2 = parseFloat(document.querySelector('input[name="rub2"]:checked')?.value || 0);
     const r3 = parseFloat(document.querySelector('input[name="rub3"]:checked')?.value || 0);
     const r4 = parseFloat(document.querySelector('input[name="rub4"]:checked')?.value || 0);
-    const autoWritingScore = r1 + r2 + r3 + r4;
+    const autoWriting = r1 + r2 + r3 + r4;
 
-    // --- MANUAL OVERRIDES ---
-    const manL = document.getElementById('manualListening').value;
-    const manR = document.getElementById('manualReading').value;
-    const manW = document.getElementById('manualWriting').value;
+    const finalListening = listeningScore;
+    const finalReading   = readingScore;
+    const finalWriting   = autoWriting;
+    const total = finalListening + finalReading + finalWriting;
+    const grade = calcGrade(total, 36);
+    const msg   = gradeMsg(grade);
 
-    const listeningScore = manL !== '' ? parseFloat(manL) : autoListeningScore;
-    const readingScore   = manR !== '' ? parseFloat(manR) : autoReadingScore;
-    const writingScore   = manW !== '' ? parseFloat(manW) : autoWritingScore;
+    // ── RESULTS CARD
+    document.getElementById('res_la').textContent         = `${laScore} / 6 pts`;
+    document.getElementById('res_lb').textContent         = `${lbScore} / 6 pts`;
+    document.getElementById('res_listening').innerHTML    = `<strong>${finalListening} / 12</strong>`;
+    document.getElementById('res_ra').textContent         = `${raScore} / 6 pts`;
+    document.getElementById('res_rb').textContent         = `${rbScore} / 6 pts`;
+    document.getElementById('res_reading').innerHTML      = `<strong>${finalReading} / 12</strong>`;
+    document.getElementById('res_writing').innerHTML      = `<strong>${finalWriting.toFixed(1)} / 12</strong>`;
+    document.getElementById('res_total').textContent      = `${total.toFixed(1)} / 36`;
+    document.getElementById('gradeDisplay').innerHTML     = `
+      <div class="grade-number">${grade}</div>
+      <div class="grade-label">Nota final (escala 1.0 – 7.0 · 60% = 4.0)</div>
+      <div class="grade-msg">${msg.text}</div>`;
 
-    const total = listeningScore + readingScore + writingScore;
-    const pct = (total / 36) * 100;
-    const grade = pct < 60
-      ? (1.0 + (pct / 60) * 3.0)
-      : (4.0 + ((pct - 60) / 40) * 3.0);
+    // ── SUMMARY DOTS
+    buildSummaryDots(laScore, lbScore, raScore, rbScore);
 
-    // --- UPDATE RESULTS ---
-    document.getElementById('resListening').textContent = `${listeningScore} / 12`;
-    document.getElementById('resReading').textContent   = `${readingScore} / 12`;
-    document.getElementById('resWriting').textContent   = `${writingScore.toFixed(1)} / 12`;
-    document.getElementById('resTotal').innerHTML       = `<strong>${total.toFixed(1)} / 36</strong>`;
-    document.getElementById('gradeDisplay').textContent = grade.toFixed(1);
-
-    let msg = '';
-    if (grade >= 6.0) msg = '🌟 Excelente trabajo. ¡Estás muy bien preparado/a!';
-    else if (grade >= 5.0) msg = '✅ Muy buen desempeño. Repasa los puntos con errores.';
-    else if (grade >= 4.0) msg = '📘 Aprobado/a. Practica más antes del examen real.';
-    else msg = '⚠️ Necesitas practicar más. Revisa el feedback y vuelve a intentarlo.';
-    document.getElementById('gradeMessage').textContent = msg;
-
-    // --- RENDER FEEDBACK ---
-    renderFeedback('feedbackLA', laFeedback, 'la');
-    renderFeedback('feedbackLB', lbFeedback, 'lb');
-    renderFeedback('feedbackRA', raFeedback, 'ra');
-    renderFeedback('feedbackRB', rbFeedback, 'rb');
+    // ── FEEDBACK
+    buildFeedback();
 
     document.getElementById('results').style.display = 'block';
+    document.getElementById('feedbackSection').style.display = 'block';
     document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
   }
 
-  function renderFeedback(containerId, items, prefix) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = items.map(item => `
-      <div class="feedback-item">
-        <div class="q-label">
-          <span class="tag ${item.ok ? 'correct-tag' : 'incorrect-tag'}">${item.ok ? '✓ Correcto' : '✗ Incorrecto'}</span>
-          Pregunta ${item.num}
-        </div>
-        <div class="student-ans">Tu respuesta: ${item.user}</div>
-        ${!item.ok ? `<div class="correct-ans">Respuesta correcta: ${item.correct}</div>` : ''}
-        <div class="explanation">💡 ${item.es}</div>
+  // ============================================================
+  // SUMMARY DOTS
+  // ============================================================
+  function buildSummaryDots(laScore, lbScore, raScore, rbScore) {
+    const laDots = LA_DATA.map(item => {
+      const user = normalizeText(document.getElementById(item.id).value);
+      const ok = user === item.correct.toLowerCase();
+      return `<div class="dot ${ok ? 'correct' : 'incorrect'}" title="${item.correct}"></div>`;
+    }).join('');
+
+    const lbDots = LB_DATA.map(item => {
+      const checked = document.querySelector(`input[name="${item.id}"]:checked`);
+      const ok = checked && checked.value === item.correct;
+      return `<div class="dot ${ok ? 'correct' : 'incorrect'}"></div>`;
+    }).join('');
+
+    const raDots = RA_DATA.map(item => {
+      const checked = document.querySelector(`input[name="${item.id}"]:checked`);
+      const ok = checked && checked.value === item.correct;
+      return `<div class="dot ${ok ? 'correct' : 'incorrect'}"></div>`;
+    }).join('');
+
+    const rbDots = RB_DATA.map(item => {
+      const checked = document.querySelector(`input[name="${item.id}"]:checked`);
+      const ok = checked && checked.value === item.correct;
+      return `<div class="dot ${ok ? 'correct' : 'incorrect'}"></div>`;
+    }).join('');
+
+    const grid = document.getElementById('summaryGrid');
+    grid.style.display = 'grid';
+    grid.innerHTML = `
+      <div class="summary-card">
+        <div class="summary-card-title">🎧 Listening A</div>
+        <div class="summary-score ${scoreColor(laScore,6,5,3)}">${laScore}/6</div>
+        <div class="summary-dots">${laDots}</div>
       </div>
-    `).join('');
+      <div class="summary-card">
+        <div class="summary-card-title">🎧 Listening B</div>
+        <div class="summary-score ${scoreColor(lbScore,6,5,3)}">${lbScore}/6</div>
+        <div class="summary-dots">${lbDots}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">📖 Reading A</div>
+        <div class="summary-score ${scoreColor(raScore,6,5,3)}">${raScore}/6</div>
+        <div class="summary-dots">${raDots}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">📖 Reading B</div>
+        <div class="summary-score ${scoreColor(rbScore,6,5,3)}">${rbScore}/6</div>
+        <div class="summary-dots">${rbDots}</div>
+      </div>`;
+  }
+
+  // ============================================================
+  // BUILD FEEDBACK
+  // ============================================================
+  function buildFeedback() {
+    // Listening A
+    let laHtml = '';
+    LA_DATA.forEach(item => {
+      const userRaw = document.getElementById(item.id).value;
+      const user = normalizeText(userRaw);
+      const ok = user === item.correct.toLowerCase();
+      const cls = ok ? 'fb-correct' : 'fb-incorrect';
+      const tag = ok ? '<span class="tag correct-tag">✓ Correcto</span>' : '<span class="tag incorrect-tag">✗ Incorrecto</span>';
+      laHtml += `<div class="feedback-item ${cls}">
+        <div class="fi-label">${item.num}. ${tag}</div>
+        <div class="student-ans">Tu respuesta: <strong>${userRaw || '(sin respuesta)'}</strong></div>
+        ${!ok ? `<div class="correct-ans">Correcto: ${item.correct}</div>` : ''}
+        <div class="explanation">💡 ${item.es}</div>
+      </div>`;
+    });
+    document.getElementById('fb_la').innerHTML = laHtml;
+
+    // Listening B
+    let lbHtml = '';
+    LB_DATA.forEach(item => {
+      const checked = document.querySelector(`input[name="${item.id}"]:checked`);
+      const user = checked ? checked.value : null;
+      const ok = user === item.correct;
+      const cls = ok ? 'fb-correct' : 'fb-incorrect';
+      const tag = ok ? '<span class="tag correct-tag">✓ Correcto</span>' : '<span class="tag incorrect-tag">✗ Incorrecto</span>';
+      const userText = checked ? checked.parentElement.textContent.trim() : '(sin respuesta)';
+      lbHtml += `<div class="feedback-item ${cls}">
+        <div class="fi-label">${item.num}. ${tag}</div>
+        <div class="student-ans">Tu respuesta: <strong>${userText}</strong></div>
+        ${!ok ? `<div class="correct-ans">Correcto: ${item.correctText}</div>` : ''}
+        <div class="explanation">💡 ${item.explanation}</div>
+      </div>`;
+    });
+    document.getElementById('fb_lb').innerHTML = lbHtml;
+
+    // Reading A
+    let raHtml = '';
+    RA_DATA.forEach(item => {
+      const checked = document.querySelector(`input[name="${item.id}"]:checked`);
+      const user = checked ? checked.value : null;
+      const ok = user === item.correct;
+      const cls = ok ? 'fb-correct' : 'fb-incorrect';
+      const tag = ok ? '<span class="tag correct-tag">✓ Correcto</span>' : '<span class="tag incorrect-tag">✗ Incorrecto</span>';
+      const userText = checked ? checked.parentElement.textContent.trim() : '(sin respuesta)';
+      raHtml += `<div class="feedback-item ${cls}">
+        <div class="fi-label">${item.num}. ${tag}</div>
+        <div class="student-ans">Tu respuesta: <strong>${userText}</strong></div>
+        ${!ok ? `<div class="correct-ans">Correcto: ${item.correctText}</div>` : ''}
+        <div class="explanation">💡 ${item.explanation}</div>
+      </div>`;
+    });
+    document.getElementById('fb_ra').innerHTML = raHtml;
+
+    // Reading B
+    let rbHtml = '';
+    RB_DATA.forEach(item => {
+      const checked = document.querySelector(`input[name="${item.id}"]:checked`);
+      const user = checked ? checked.value : null;
+      const ok = user === item.correct;
+      const cls = ok ? 'fb-correct' : 'fb-incorrect';
+      const tag = ok ? '<span class="tag correct-tag">✓ Correcto</span>' : '<span class="tag incorrect-tag">✗ Incorrecto</span>';
+      const userText = checked ? checked.parentElement.textContent.trim() : '(sin respuesta)';
+      rbHtml += `<div class="feedback-item ${cls}">
+        <div class="fi-label">${item.num}. ${tag}</div>
+        <div class="student-ans">Tu respuesta: <strong>${userText}</strong></div>
+        ${!ok ? `<div class="correct-ans">Correcto: ${item.correctText}</div>` : ''}
+        <div class="explanation">💡 ${item.explanation}</div>
+      </div>`;
+    });
+    document.getElementById('fb_rb').innerHTML = rbHtml;
+
+    // Section messages
+    const laScore = LA_DATA.filter(item => normalizeText(document.getElementById(item.id).value) === item.correct.toLowerCase()).length;
+    const lbScore = LB_DATA.filter(item => { const c = document.querySelector(`input[name="${item.id}"]:checked`); return c && c.value === item.correct; }).length;
+    const raScore = RA_DATA.filter(item => { const c = document.querySelector(`input[name="${item.id}"]:checked`); return c && c.value === item.correct; }).length;
+    const rbScore = RB_DATA.filter(item => { const c = document.querySelector(`input[name="${item.id}"]:checked`); return c && c.value === item.correct; }).length;
+
+    buildSectionMsg('sectionMsgListening', '🎧 Listening', laScore + lbScore, 12, [
+      { check: () => normalizeText(document.getElementById('la1').value) !== 'large',     tip: 'Gap 1: La expo es un evento "large" (grande) y profesional. Escucha los adjetivos que describen cómo es el evento.' },
+      { check: () => normalizeText(document.getElementById('la2').value) !== 'popular',   tip: 'Gap 2: La expo es un evento "popular" en el mundo. Presta atención a la palabra que describe cómo es conocida la feria.' },
+      { check: () => normalizeText(document.getElementById('la3').value) !== 'visitors',  tip: 'Gap 3: Miles de personas van a la expo cada año. Escucha la palabra que describe a las personas que llegan.' },
+      { check: () => normalizeText(document.getElementById('la4').value) !== 'products',  tip: 'Gap 4: Las empresas muestran lo que venden. Escucha la palabra que describe qué presentan las empresas.' },
+      { check: () => normalizeText(document.getElementById('la5').value) !== 'contracts', tip: 'Gap 5: En la expo, las empresas firman acuerdos formales de trabajo. Escucha la palabra que describe ese tipo de acuerdo.' },
+      { check: () => normalizeText(document.getElementById('la6').value) !== 'experts',   tip: 'Gap 6: La expo invita a personas con mucho conocimiento de la industria. Escucha quién da las charlas.' },
+      { check: () => { const c = document.querySelector('input[name="lb1"]:checked'); return !c || c.value !== 'b'; }, tip: 'LB Q1: Laura dice: &quot;I\'m coming from downtown.&quot; Presta atención a la ubicación exacta.' },
+      { check: () => { const c = document.querySelector('input[name="lb2"]:checked'); return !c || c.value !== 'd'; }, tip: 'LB Q2: Laura dice que está gestionando documentación de aduanas. Escucha el verbo en presente continuo.' },
+      { check: () => { const c = document.querySelector('input[name="lb3"]:checked'); return !c || c.value !== 'c'; }, tip: 'LB Q3: Laura menciona cuántos años de experiencia tiene. Anota los números que escuchas.' },
+    ], 10, 7);
+
+    buildSectionMsg('sectionMsgReading', '📖 Reading', raScore + rbScore, 12, [
+      { check: () => { const c = document.querySelector('input[name="ra1"]:checked'); return !c || c.value !== 'b'; }, tip: 'RA Q1: "reliable and professional" — reliable significa confiable, no international ni new.' },
+      { check: () => { const c = document.querySelector('input[name="ra2"]:checked'); return !c || c.value !== 'a'; }, tip: 'RA Q2: "local and international ports" — local contrasta con international en el texto.' },
+      { check: () => { const c = document.querySelector('input[name="ra3"]:checked'); return !c || c.value !== 'c'; }, tip: 'RA Q3: "handles hundreds of shipments" — shipments son los envíos, no deliveries ni contracts.' },
+      { check: () => { const c = document.querySelector('input[name="ra4"]:checked'); return !c || c.value !== 'a'; }, tip: 'RA Q4: "reviews commercial agreements" — agreements son los acuerdos comerciales.' },
+      { check: () => { const c = document.querySelector('input[name="ra5"]:checked'); return !c || c.value !== 'c'; }, tip: 'RA Q5: "works hard to promote" — promote significa promover/posicionar productos.' },
+      { check: () => { const c = document.querySelector('input[name="ra6"]:checked'); return !c || c.value !== 'b'; }, tip: 'RA Q6: "organizes training workshops" — workshops son talleres de capacitación.' },
+    ], 10, 7);
+
+    // Apply default filter
+    filterFeedback('incorrect');
+  }
+
+  function buildSectionMsg(containerId, sectionName, score, total, checks, greenThr, yellowThr) {
+    const pct = score / total;
+    const wrongChecks = checks.filter(c => c.check());
+    const level = score >= greenThr ? 'great' : score >= yellowThr ? 'good' : 'needswork';
+    const titles = { great: '¡Muy bien!', good: 'Buen trabajo', needswork: 'Necesitas practicar más' };
+    const intros = {
+      great:     `Obtuviste ${score} de ${total} puntos en ${sectionName}. ¡Sigue así!`,
+      good:      `Obtuviste ${score} de ${total} puntos en ${sectionName}. Revisa los puntos a mejorar:`,
+      needswork: `Obtuviste ${score} de ${total} puntos en ${sectionName}. Trabaja en estas áreas:`
+    };
+    const tips = level === 'great' ? '' : wrongChecks.slice(0, 4).map(c => `<li>${c.tip}</li>`).join('');
+    document.getElementById(containerId).innerHTML = `<div class="section-feedback-msg ${level}">
+      <strong>${titles[level]}</strong> ${intros[level]}
+      ${tips ? `<ul class="msg-tips">${tips}</ul>` : ''}
+    </div>`;
+  }
+
+    // ============================================================
+  // PROGRESS BAR
+  // ============================================================
+  const TOTAL_QUESTIONS = 24; // 6 LA + 6 LB + 6 RA + 6 RB
+
+  function updateProgress() {
+    let answered = 0;
+    // LA fill-in-the-blank
+    ['la1','la2','la3','la4','la5','la6'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.value.trim()) answered++;
+    });
+    // LB radios
+    ['lb1','lb2','lb3','lb4','lb5','lb6'].forEach(name => {
+      if (document.querySelector(`input[name="${name}"]:checked`)) answered++;
+    });
+    // RA radios
+    ['ra1','ra2','ra3','ra4','ra5','ra6'].forEach(name => {
+      if (document.querySelector(`input[name="${name}"]:checked`)) answered++;
+    });
+    // RB radios
+    ['rb1','rb2','rb3','rb4','rb5','rb6'].forEach(name => {
+      if (document.querySelector(`input[name="${name}"]:checked`)) answered++;
+    });
+    const pct = Math.round((answered / TOTAL_QUESTIONS) * 100);
+    const fill = document.getElementById('progressFill');
+    const label = document.getElementById('progressLabel');
+    if (fill) { fill.style.width = pct + '%'; fill.className = 'progress-fill' + (answered === TOTAL_QUESTIONS ? ' complete' : ''); }
+    if (label) label.textContent = answered === TOTAL_QUESTIONS ? '✅ Todas las preguntas respondidas' : `${answered} de ${TOTAL_QUESTIONS} preguntas respondidas`;
+    checkForAnswers();
+    return answered;
+  }
+
+  // ============================================================
+  // FLASH TOAST
+  // ============================================================
+  let saveTimer;
+  function flashToast() {
+    const t = document.getElementById('saveToast');
+    if (!t) return;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2000);
+  }
+
+  // ============================================================
+  // CHECK BEFORE CALCULATE
+  // ============================================================
+  function checkBeforeCalculate() {
+    const answered = updateProgress();
+    if (answered < TOTAL_QUESTIONS) {
+      const missingLA = ['la1','la2','la3','la4','la5','la6'].filter(id => { const el = document.getElementById(id); return !el || !el.value.trim(); }).length;
+      const missingLB = ['lb1','lb2','lb3','lb4','lb5','lb6'].filter(n => !document.querySelector(`input[name="${n}"]:checked`)).length;
+      const missingRA = ['ra1','ra2','ra3','ra4','ra5','ra6'].filter(n => !document.querySelector(`input[name="${n}"]:checked`)).length;
+      const missingRB = ['rb1','rb2','rb3','rb4','rb5','rb6'].filter(n => !document.querySelector(`input[name="${n}"]:checked`)).length;
+      const items = [];
+      if (missingLA) items.push(`${missingLA} espacio(s) de Listening A (fill in the gaps)`);
+      if (missingLB) items.push(`${missingLB} pregunta(s) de Listening B`);
+      if (missingRA) items.push(`${missingRA} pregunta(s) de Reading A`);
+      if (missingRB) items.push(`${missingRB} pregunta(s) de Reading B`);
+      const list = document.getElementById('warningList');
+      if (list) list.innerHTML = items.map(i => `<li class="warn-item">⚠️ ${i}</li>`).join('');
+      const modal = document.getElementById('warningModal');
+      if (modal) modal.classList.add('active');
+    } else {
+      calculateGrade();
+    }
+  }
+
+  function goToUnanswered() {
+    closeWarningModal();
+    const checks = [
+      () => ['la1','la2','la3','la4','la5','la6'].map(id => document.getElementById(id)).find(el => el && !el.value.trim()),
+      () => { const n = ['lb1','lb2','lb3','lb4','lb5','lb6'].find(n => !document.querySelector(`input[name="${n}"]:checked`)); return n ? document.querySelector(`input[name="${n}"]`) : null; },
+      () => { const n = ['ra1','ra2','ra3','ra4','ra5','ra6'].find(n => !document.querySelector(`input[name="${n}"]:checked`)); return n ? document.querySelector(`input[name="${n}"]`) : null; },
+      () => { const n = ['rb1','rb2','rb3','rb4','rb5','rb6'].find(n => !document.querySelector(`input[name="${n}"]:checked`)); return n ? document.querySelector(`input[name="${n}"]`) : null; }
+    ];
+    for (const fn of checks) {
+      const el = fn();
+      if (el) { el.scrollIntoView({behavior:'smooth', block:'center'}); el.style.outline='3px solid #f59e0b'; setTimeout(()=>el.style.outline='',2500); break; }
+    }
+  }
+
+  function forceCalculate() { closeWarningModal(); calculateGrade(); }
+  function closeWarningModal() { const m = document.getElementById('warningModal'); if (m) m.classList.remove('active'); }
+
+  // ============================================================
+  // FILTER FEEDBACK TABS
+  // ============================================================
+  function filterFeedback(type) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll(`.filter-tab[data-filter="${type}"]`).forEach(t => t.classList.add('active'));
+    document.querySelectorAll('.feedback-item').forEach(item => {
+      if (type === 'all') { item.classList.remove('hidden'); return; }
+      if (type === 'incorrect') item.classList.toggle('hidden', item.classList.contains('fb-correct'));
+      else item.classList.toggle('hidden', item.classList.contains('fb-incorrect'));
+    });
+  }
+
+  // ============================================================
+  // PRINT RESULTS
+  // ============================================================
+  function printResults() { window.print(); }
+
+  // ============================================================
+  // TOGGLE SPANISH INSTRUCTIONS
+  // ============================================================
+  function toggleInstr(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const btn = el.previousElementSibling;
+    if (el.style.display === 'block') {
+      el.style.display = 'none';
+      btn.textContent = '🌐 Ver en español';
+    } else {
+      el.style.display = 'block';
+      btn.textContent = '🌐 Ocultar traducción';
+    }
+  }
+
+  // ============================================================
+  // CHECK FOR ANSWERS (dynamic banner)
+  // ============================================================
+  function checkForAnswers() {
+    const hasRadio = !!document.querySelector('input[type="radio"]:checked');
+    const textIds = ['la1','la2','la3','la4','la5','la6','studentName','writingText'];
+    const hasText = textIds.some(id => {
+      const el = document.getElementById(id);
+      return el && el.value && el.value.trim() !== '';
+    });
+    const banner = document.getElementById('savedBanner');
+    if (banner) banner.style.display = (hasRadio || hasText) ? 'flex' : 'none';
+  }
+
+  // ============================================================
+  // CLEAR ALL ANSWERS
+  // ============================================================
+  function clearAllAnswers() {
+    if (!confirm('¿Seguro que quieres borrar todas tus respuestas? Esta acción no se puede deshacer.')) return;
+    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+    const textIds = ['la1','la2','la3','la4','la5','la6','studentName','writingText'];
+    textIds.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const selectEl = document.getElementById('jobSelect');
+    if (selectEl) selectEl.value = '';
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('feedbackSection').style.display = 'none';
+    document.getElementById('summaryGrid').style.display = 'none';
+    document.getElementById('summaryGrid').innerHTML = '';
+    countWords();
+    updateRubric();
+    updateProgress();
+    checkForAnswers();
   }
 
   // ============================================================
   // INIT
   // ============================================================
-  window.addEventListener('load', loadSaved);
+  window.addEventListener('load', () => {
+    loadSaved();
+    checkForAnswers();
+    updateProgress();
+  });
 </script>
 
 </body>
